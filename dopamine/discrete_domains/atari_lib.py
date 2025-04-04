@@ -42,7 +42,6 @@ import math
 from absl import logging
 
 import ale_py
-from baselines.common import atari_wrappers
 import cv2
 import gin
 import gym as legacy_gym
@@ -63,90 +62,6 @@ RainbowNetworkType = collections.namedtuple(
 ImplicitQuantileNetworkType = collections.namedtuple(
     'iqn_network', ['quantile_values', 'quantiles']
 )
-
-
-
-
-@gin.configurable
-def create_atari_environment(
-    game_name=None,
-    sticky_actions=True,
-    use_legacy_gym=False,
-    use_ppo_preprocessing=False,
-    continuous_action_threshold=None,
-):
-  """Wraps an Atari 2600 Gym environment with some basic preprocessing.
-
-  This preprocessing matches the guidelines proposed in Machado et al. (2017),
-  "Revisiting the Arcade Learning Environment: Evaluation Protocols and Open
-  Problems for General Agents".
-
-  The created environment is the Gym wrapper around the Arcade Learning
-  Environment.
-
-  The main choice available to the user is whether to use sticky actions or not.
-  Sticky actions, as prescribed by Machado et al., cause actions to persist
-  with some probability (0.25) when a new command is sent to the ALE. This
-  can be viewed as introducing a mild form of stochasticity in the environment.
-  We use them by default.
-
-  Args:
-    game_name: str, the name of the Atari 2600 domain.
-    sticky_actions: bool, whether to use sticky_actions as per Machado et al.
-    use_legacy_gym: bool, whether to use use the legacy Gym API.
-    use_ppo_preprocessing: bool, whether to use preprocessing for PPO.
-    continuous_action_threshold: Optional[float], if not None, will use CALE
-      (the continuous version of the ALE) with this action threshold.
-
-  Returns:
-    An Atari 2600 environment with some standard preprocessing.
-  """
-  assert game_name is not None
-  if use_legacy_gym:
-    copy_roms(roms_dir)
-    game_version = 'v0' if sticky_actions else 'v4'
-    full_game_name = f'{game_name}NoFrameskip-{game_version}'
-    env = legacy_gym.make(full_game_name)
-  else:
-    gym.register_envs(ale_py)
-    full_game_name = f'ALE/{game_name}-v5'
-    repeat_action_probability = 0.25 if sticky_actions else 0.0
-    continuous = continuous_action_threshold is not None
-    continuous_action_threshold = (
-        0.0
-        if continuous_action_threshold is None
-        else continuous_action_threshold
-    )
-    env = gym.make(
-        full_game_name,
-        repeat_action_probability=repeat_action_probability,
-        frameskip=1,
-        max_num_frames_per_episode=100_000,
-        continuous=continuous,
-        continuous_action_threshold=continuous_action_threshold,
-    )
-
-  if use_ppo_preprocessing:
-    env = atari_wrappers.NoopResetEnv(env, noop_max=30)
-    env = atari_wrappers.MaxAndSkipEnv(env, skip=4)
-    env = atari_wrappers.EpisodicLifeEnv(env)
-    if 'FIRE' in env.unwrapped.get_action_meanings():
-      env = atari_wrappers.FireResetEnv(env)
-    env = atari_wrappers.ClipRewardEnv(env)
-    env = gym.wrappers.ResizeObservation(env, (84, 84))
-    env = gym.wrappers.GrayScaleObservation(env)
-    env = gym.wrappers.FrameStack(env, 4)
-    env = env.env  # Strip the TimeLimit wrapper
-    env = GameOverWrapper(env)
-  else:
-    # Strip out the TimeLimit wrapper from Gym, which caps us at 100k frames. We
-    # handle this time limit internally instead, which lets us cap at 108k
-    # frames (30 minutes). The TimeLimit wrapper also plays poorly with saving
-    # and restoring states.
-    env = env.env
-    env = AtariPreprocessing(env)
-  return env
-
 
 @gin.configurable(denylist=['variables'])
 def maybe_transform_variable_names(variables, legacy_checkpoint_load=False):
