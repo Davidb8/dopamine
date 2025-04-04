@@ -383,7 +383,8 @@ class JaxDQNAgent(object):
     self.allow_partial_reload = allow_partial_reload
     self._loss_type = loss_type
     self._collector_allowlist = collector_allowlist
-    self._replay_scheme = 'uniform'
+    if not hasattr(self, '_replay_scheme'):
+      self._replay_scheme = 'uniform'
 
     self._rng = jax.random.PRNGKey(self._seed)
     state_shape = self.observation_shape + (stack_size,)
