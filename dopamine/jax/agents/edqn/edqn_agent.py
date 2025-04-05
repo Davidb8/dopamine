@@ -31,7 +31,7 @@ import optax
 import tensorflow as tf
 
 
-@functools.partial(jax.jit, static_argnums=(0, 3, 10, 11, 12))
+@functools.partial(jax.jit, static_argnums=(0, 3, 11, 12))
 def train(
     network_def,
     online_params,
@@ -258,7 +258,7 @@ class JaxEnhancedDQNAgent(dqn_agent.JaxDQNAgent):
           # Using sqrt(loss) as in Rainbow for priority calculation (alpha=0.5)
           # Add epsilon to prevent 0 priorities
           priorities = jnp.sqrt(jnp.abs(elementwise_loss) + 1e-10)
-          self._replay.update(self.replay_elements['indices'], priorities)
+          self._replay.update(self.replay_elements['indices'], priorities=priorities)
 
         if (
             self.summary_writer is not None
