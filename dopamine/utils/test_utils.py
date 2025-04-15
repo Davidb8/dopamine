@@ -12,31 +12,27 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-"""Common testing utilities shared across agents."""
+"""Test utilities for Dopamine."""
 
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
+import numpy as np
 
 
+def update_terminal_episodes(episodes_list, terminal_list):
+  """Updates the list of episodes with terminated episodes."""
+  for i, terminal_value in enumerate(terminal_list):
+    if not terminal_value:
+      episodes_list[i] = []
 
-import mock
-import tensorflow as tf
 
-
-class MockReplayBuffer(object):
-  """Mock ReplayBuffer to verify the way the agent interacts with it."""
-
-  def __init__(self, is_jax=False):
-    if is_jax:
-      self.add = mock.Mock()
-      self.add_count = 0
-      self.sum_tree = mock.Mock()
-      self._sampling_distribution = mock.Mock()
-    else:
-      with tf.compat.v1.variable_scope(
-          'MockReplayBuffer', reuse=tf.compat.v1.AUTO_REUSE
-      ):
-        self.add = mock.Mock()
-        self.memory = mock.Mock()
-        self.memory.add_count = 0
+def get_mock_replay_elements(replay_capacity, observation_shape, stack_size,
+                             batch_size, update_horizon):
+  """Creates mock replay elements for testing."""
+  states = np.random.randint(
+      0, 256, size=[replay_capacity] + list(observation_shape))
+  next_states = np.random.randint(
+      0, 256, size=[replay_capacity] + list(observation_shape))
+  actions = np.random.randint(0, 4, size=replay_capacity)
+  rewards = np.random.random(size=replay_capacity)
+  terminals = np.random.random(size=replay_capacity) > 0.9
+  
+  return states, actions, rewards, next_states, terminals 

@@ -23,7 +23,10 @@ from flax import linen as nn
 import gin
 import jax
 from jax import numpy as jnp
-from tensorflow_probability.substrates import jax as tfp
+from dopamine.jax import compat_tfp
+
+# Use our compatibility layer instead of tensorflow_probability
+tfp = compat_tfp.jax
 
 tfd = tfp.distributions
 tfb = tfp.bijectors

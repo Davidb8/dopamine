@@ -23,13 +23,15 @@ from typing import Optional, Sequence, Tuple, Union
 from absl import logging
 from dopamine.discrete_domains import atari_lib
 from dopamine.jax import continuous_networks
+from dopamine.jax import compat_tfp
 from flax import linen as nn
 import gin
 import jax
 import jax.numpy as jnp
 import numpy as onp
-from tensorflow_probability.substrates import jax as tfp
 
+# Use our compatibility layer instead of tensorflow_probability
+tfp = compat_tfp.jax
 
 gin.constant('jax_networks.CARTPOLE_OBSERVATION_DTYPE', jnp.float64)
 gin.constant(

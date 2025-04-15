@@ -29,13 +29,15 @@ from dopamine.jax.replay_memory import elements
 from dopamine.jax.replay_memory import replay_buffer
 from dopamine.jax.replay_memory import samplers
 from dopamine.metrics import statistics_instance
+from dopamine.jax import compat
 import gin
 import jax
 import jax.numpy as jnp
 import numpy as onp
 import optax
-import tensorflow as tf
 
+# Use our compatibility layer instead of tensorflow
+tf = compat.tf
 
 NATURE_DQN_OBSERVATION_SHAPE = atari_lib.NATURE_DQN_OBSERVATION_SHAPE
 NATURE_DQN_DTYPE = jnp.uint8

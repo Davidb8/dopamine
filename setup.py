@@ -28,29 +28,23 @@ here = pathlib.Path(__file__).parent.resolve()
 long_description = (here / 'README.md').read_text(encoding='utf-8')
 
 install_requires = [
-    'tensorflow >= 2.2.0',
-    'gin-config >= 0.3.0',
     'absl-py >= 0.9.0',
-    'ale_py >= 0.10.1',
-    'opencv-python >= 3.4.8.29',
-    'gym <= 0.25.2',
     'gymnasium >= 1.0.0',
-    'flax >= 0.2.0',
-    'jax >= 0.1.72',
-    'jaxlib >= 0.1.51',
-    'Pillow >= 7.0.0',
-    'numpy >= 1.16.4',
-    'pygame >= 1.9.2',
-    'pandas >= 0.24.2',
-    'python-snappy >= 0.7.3',
-    'tf_slim >= 1.0',
-    'tensorflow-probability >= 0.13.0',
-    'tf-keras >= 2.18.0',
+    'flax >= 0.5.3',
+    'jax >= 0.3.16',
+    'jaxlib >= 0.3.15',
+    'numpy >= 1.18.5',
+    'optax >= 0.1.4',
+    'orbax-checkpoint >= 0.4.1',
+    'gin-config >= 0.3.0',
+    'msgpack >= 1.0.0',
+    'etils >= 1.0.0',
+    'typing_extensions >= 4.5.0',
     'tqdm >= 4.64.1',
 ]
 
 dopamine_description = (
-    'Dopamine: A framework for flexible Reinforcement Learning research'
+    'Dopamine: JAX-based Reinforcement Learning agents'
 )
 
 setup(
@@ -68,10 +62,12 @@ setup(
         'Intended Audience :: Science/Research',
         'License :: OSI Approved :: Apache Software License',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.5',
-        'Programming Language :: Python :: 3.6',
-        'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
+        'Programming Language :: Python :: 3.9',
+        'Programming Language :: Python :: 3.10',
+        'Programming Language :: Python :: 3.11',
+        'Programming Language :: Python :: 3.12',
+        'Programming Language :: Python :: 3.13',
         'Programming Language :: Python :: 3 :: Only',
         'Topic :: Scientific/Engineering',
         'Topic :: Scientific/Engineering :: Mathematics',
@@ -85,7 +81,7 @@ setup(
     packages=find_packages(exclude=['docs']),
     package_data={'testdata': ['testdata/*.gin']},
     install_requires=install_requires,
-    python_requires='>=3.5,<4',
+    python_requires='>=3.8',
     project_urls={  # Optional
         'Documentation': 'https://github.com/google/dopamine',
         'Bug Reports': 'https://github.com/google/dopamine/issues',
