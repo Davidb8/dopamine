@@ -37,6 +37,7 @@ install_requires = [
     'orbax-checkpoint >= 0.2.0',
     'absl-py >= 0.9.0',
     'tensorflow >= 2.8.0',
+    'python-snappy >= 0.7.3',
     'dataclasses; python_version<"3.7"',
 ]
 
