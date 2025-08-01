@@ -40,7 +40,7 @@ install_requires = [
     'python-snappy >= 0.7.3',
     'etils[epath] >= 1.0.0',
     'msgpack >= 1.0.0',
-    'dataclasses; python_version<"3.7"',
+    'pyyaml >= 6.0',  # Explicit PyYAML to avoid build issues
 ]
 
 dopamine_description = (
@@ -62,10 +62,12 @@ setup(
         'Intended Audience :: Science/Research',
         'License :: OSI Approved :: Apache Software License',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.5',
-        'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
+        'Programming Language :: Python :: 3.9',
+        'Programming Language :: Python :: 3.10',
+        'Programming Language :: Python :: 3.11',
+        'Programming Language :: Python :: 3.12',
         'Programming Language :: Python :: 3 :: Only',
         'Topic :: Scientific/Engineering',
         'Topic :: Scientific/Engineering :: Mathematics',
@@ -79,7 +81,7 @@ setup(
     packages=find_packages(exclude=['docs']),
     package_data={'testdata': ['testdata/*.gin']},
     install_requires=install_requires,
-    python_requires='>=3.5,<4',
+    python_requires='>=3.7',
     project_urls={  # Optional
         'Documentation': 'https://github.com/google/dopamine',
         'Bug Reports': 'https://github.com/google/dopamine/issues',

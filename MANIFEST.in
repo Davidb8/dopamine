@@ -1,0 +1,9 @@
+include README.md
+include LICENSE
+include AUTHORS
+include requirements.txt
+recursive-include dopamine *.py
+recursive-include dopamine *.gin
+recursive-exclude dopamine *.pyc
+recursive-exclude dopamine __pycache__
+exclude test_numpy_compatibility.py

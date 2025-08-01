@@ -22,9 +22,33 @@ import dopamine.jax.replay_memory.replay_buffer
 
 ## Installation
 
-This minimal dopamine package requires Python 3.7+ and supports NumPy 2.2+:
+This minimal dopamine package requires Python 3.7+ and supports NumPy 2.2+.
+
+### Recommended Installation (avoids build issues)
 
 ```bash
+# Install pre-built wheels first to avoid Cython build errors
+pip install --only-binary=all pyyaml numpy
+
+# Then install the rest of the requirements
+pip install -r requirements.txt
+```
+
+### Alternative Installation
+
+If you encounter build errors, try installing dependencies in this order:
+
+```bash
+# Install build dependencies first
+pip install --upgrade pip setuptools wheel
+
+# Install key dependencies with pre-built wheels
+pip install --only-binary=:all: numpy>=2.2.0 pyyaml>=6.0
+
+# Install JAX ecosystem
+pip install "jax>=0.4.33" "jaxlib>=0.4.33" "flax>=0.5.3"
+
+# Install remaining dependencies
 pip install -r requirements.txt
 ```
 
@@ -35,6 +59,7 @@ This version is updated to work with NumPy 2.2.4 and later versions. Key updates
 - **JAX/JAXLib 0.4.33+**: Full NumPy 2.2 support  
 - **TensorFlow 2.18+**: NumPy 2.0+ compatibility
 - **Orbax 0.6.0+**: Updated for newer JAX versions
+- **PyYAML 6.0+**: Explicit dependency to avoid build issues
 
 ## Testing
 
@@ -50,6 +75,41 @@ import numpy as np
 
 print(f"✅ All imports successful with NumPy {np.__version__}")
 ```
+
+## Troubleshooting
+
+### Build Errors (Cython/PyYAML issues)
+
+If you see errors like `AttributeError: cython_sources` or PyYAML build failures:
+
+1. **Use pre-built wheels**: 
+   ```bash
+   pip install --only-binary=:all: pyyaml numpy
+   ```
+
+2. **Clear pip cache**:
+   ```bash
+   pip cache purge
+   ```
+
+3. **Install in a fresh environment**:
+   ```bash
+   conda create -n dopamine python=3.11
+   conda activate dopamine
+   ```
+
+4. **For conda users**:
+   ```bash
+   conda install -c conda-forge numpy pyyaml
+   pip install -r requirements.txt
+   ```
+
+### NumPy Compatibility Issues
+
+If NumPy 2.2.4 isn't being installed:
+- Check that TensorFlow >= 2.18 is installed 
+- Verify JAX >= 0.4.33 is installed
+- Force NumPy upgrade: `pip install --upgrade "numpy>=2.2.0"`
 
 ## Original Dopamine
 

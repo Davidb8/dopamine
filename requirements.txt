@@ -11,4 +11,4 @@ tensorflow>=2.18.0
 python-snappy>=0.7.3
 etils[epath]>=1.0.0
 msgpack>=1.0.0
-dataclasses; python_version<"3.7"
+pyyaml>=6.0
