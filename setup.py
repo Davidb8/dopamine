@@ -39,7 +39,7 @@ install_requires = [
     'jax == 0.4.38',
     'jaxlib == 0.4.38',
     'Pillow >= 7.0.0',
-    'numpy == 2.2.4',
+    'numpy >= 1.16.4',
     'pygame >= 1.9.2',
     'pandas >= 0.24.2',
     'python-snappy >= 0.7.3',
