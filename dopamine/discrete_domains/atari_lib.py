@@ -15,12 +15,12 @@
 """Minimal Atari constants and network types for DQN agents."""
 
 import collections
-import tensorflow as tf
+import numpy as np
 
 
 # Constants used by DQN agents
 NATURE_DQN_OBSERVATION_SHAPE = (84, 84)  # Size of downscaled Atari 2600 frame.
-NATURE_DQN_DTYPE = tf.uint8  # DType of Atari 2600 observations.
+NATURE_DQN_DTYPE = np.uint8  # DType of Atari 2600 observations.
 NATURE_DQN_STACK_SIZE = 4  # Number of frames in the state stack.
 
 # Network output types

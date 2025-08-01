@@ -43,7 +43,6 @@ dependencies = [
     "numpy >= 2.2.0",
     "orbax-checkpoint >= 0.6.0",
     "absl-py >= 0.9.0",
-    "tensorflow >= 2.18.0",
     "python-snappy >= 0.7.3",
     "etils[epath] >= 1.0.0",
     "msgpack >= 1.0.0",

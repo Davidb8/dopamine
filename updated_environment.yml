@@ -1,0 +1,48 @@
+name: VolpeEnv
+channels:
+  - conda-forge
+dependencies:
+  # Core Production Dependencies
+  - python=3.12.0
+  - boto3=1.37.30
+  - ephem=4.1.6
+  - GDAL=3.10.3
+  - geopandas=1.0.1
+  - h5py=3.13
+  - numpy=2.2.4
+  - opensimplex=0.4.5
+  - pydantic=2.11.3
+  - pydantic-settings=2.8.1
+  - pygrib=2.1.6
+  - scikit-learn=1.6.1
+  - scipy=1.15.2
+  - typing_extensions=4.14.0
+  - xarray=2025.3.1
+  - h5netcdf=1.6.1
+  - pyjwt=2.10.1
+  - simplekml=1.3.6
+  - netcdf4=1.7.2
+  - ambiance=1.3.1
+  - jax=0.4.38
+  - jaxlib=0.4.38
+  # tensorflow-probability=0.25.0  # Removed - TensorFlow-free version
+  - numba=0.61.2
+  - gin-config=0.5.0
+  
+  # Additional dependencies for dopamine-rl (available on conda-forge)
+  - flax
+  - optax
+  - absl-py
+  - python-snappy
+  - msgpack-python
+  - pyyaml
+
+  # Use pip only for packages unavailable on conda-forge or for specific versions
+  - pip
+  - pip:
+      - awslambdaric==3.1.1
+      - boto3-stubs==1.26.63
+      - openmeteo-requests==1.4
+      - orbax-checkpoint>=0.6.0
+      - etils[epath]>=1.0.0
+      - git+https://github.com/Davidb8/dopamine.git@usky-minimal

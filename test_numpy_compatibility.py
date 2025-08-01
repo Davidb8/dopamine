@@ -36,9 +36,6 @@ def test_numpy_compatibility():
         import jax
         print(f"  ✅ JAX {jax.__version__}")
         
-        import tensorflow as tf
-        print(f"  ✅ TensorFlow {tf.__version__}")
-        
         import flax
         print(f"  ✅ Flax {flax.__version__}")
         

@@ -28,7 +28,7 @@ import jax
 import jax.numpy as jnp
 import numpy as onp
 import optax
-import tensorflow as tf
+# TensorFlow removed - using JAX/Flax only
 
 
 @functools.partial(jax.jit, static_argnums=(0, 3, 11, 12))
@@ -260,19 +260,17 @@ class JaxEnhancedDQNAgent(dqn_agent.JaxDQNAgent):
           priorities = jnp.sqrt(jnp.abs(elementwise_loss) + 1e-10)
           self._replay.update(self.replay_elements['indices'], priorities=priorities)
 
+        # Log loss using collector_dispatcher or simple logging
         if (
-            self.summary_writer is not None
-            and self.training_steps > 0
+            self.training_steps > 0
             and self.training_steps % self.summary_writing_frequency == 0
         ):
           loss_name = (
               'HuberLoss' if self.loss_type == 'huber' else 'MSELoss'
           )
-          with self.summary_writer.as_default():
-            tf.summary.scalar(
-                loss_name, mean_loss, step=self.training_steps
-            )
-          self.summary_writer.flush()
+          # Simple console logging
+          print(f"Step {self.training_steps}: {loss_name} = {mean_loss:.6f}")
+          
           if hasattr(self, 'collector_dispatcher'):
             self.collector_dispatcher.write(
                 [

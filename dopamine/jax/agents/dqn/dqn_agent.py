@@ -34,7 +34,7 @@ import jax
 import jax.numpy as jnp
 import numpy as onp
 import optax
-import tensorflow as tf
+import os
 
 
 NATURE_DQN_OBSERVATION_SHAPE = atari_lib.NATURE_DQN_OBSERVATION_SHAPE
@@ -371,14 +371,9 @@ class JaxDQNAgent(object):
     self.update_period = update_period
     self.eval_mode = eval_mode
     self.training_steps = 0
-    if isinstance(summary_writer, str):
-      try:
-        tf.compat.v1.enable_v2_behavior()
-      except ValueError:
-        pass
-      self.summary_writer = tf.summary.create_file_writer(summary_writer)
-    else:
-      self.summary_writer = summary_writer
+    # Summary writer disabled - TensorFlow removed
+    # For logging, use collector_dispatcher or simple print statements
+    self.summary_writer = None
     self.summary_writing_frequency = summary_writing_frequency
     self.allow_partial_reload = allow_partial_reload
     self._loss_type = loss_type
@@ -580,14 +575,14 @@ class JaxDQNAgent(object):
             self.cumulative_gamma,
             self._loss_type,
         )
+        # Log loss using collector_dispatcher or simple logging
         if (
-            self.summary_writer is not None
-            and self.training_steps > 0
+            self.training_steps > 0
             and self.training_steps % self.summary_writing_frequency == 0
         ):
-          with self.summary_writer.as_default():
-            tf.summary.scalar('HuberLoss', loss, step=self.training_steps)
-          self.summary_writer.flush()
+          # Simple console logging
+          print(f"Step {self.training_steps}: HuberLoss = {loss:.6f}")
+          
           if hasattr(self, 'collector_dispatcher'):
             self.collector_dispatcher.write(
                 [
@@ -663,11 +658,11 @@ class JaxDQNAgent(object):
     """Returns a self-contained bundle of the agent's state.
 
     This is used for checkpointing. It will return a dictionary containing all
-    non-TensorFlow objects (to be saved into a file by the caller), and it saves
-    all TensorFlow objects into a checkpoint file.
+    non-JAX objects (to be saved into a file by the caller), and it saves
+    all JAX/Flax objects into a checkpoint file.
 
     Args:
-      checkpoint_dir: str, directory where TensorFlow objects will be saved.
+      checkpoint_dir: str, directory where JAX objects will be saved.
       iteration_number: int, iteration number to use for naming the checkpoint
         file.
 
@@ -675,7 +670,7 @@ class JaxDQNAgent(object):
       A dict containing additional Python objects to be checkpointed by the
         experiment. If the checkpoint directory does not exist, returns None.
     """
-    if not tf.io.gfile.exists(checkpoint_dir):
+    if not os.path.exists(checkpoint_dir):
       return None
     # Checkpoint the out-of-graph replay buffer.
     self._replay.save(checkpoint_dir, iteration_number)
@@ -692,7 +687,7 @@ class JaxDQNAgent(object):
     """Restores the agent from a checkpoint.
 
     Restores the agent's Python objects to those specified in bundle_dictionary,
-    and restores the TensorFlow objects to those specified in the
+    and restores the JAX/Flax objects to those specified in the
     checkpoint_dir. If the checkpoint_dir does not exist, will not reset the
       agent's state.
 
@@ -710,7 +705,7 @@ class JaxDQNAgent(object):
       # self._replay.load() will throw a NotFoundError if it does not find all
       # the necessary files.
       self._replay.load(checkpoint_dir, iteration_number)
-    except (tf.errors.NotFoundError, FileNotFoundError):
+    except FileNotFoundError:
       if not self.allow_partial_reload:
         # If we don't allow partial reloads, we will return False.
         return False
