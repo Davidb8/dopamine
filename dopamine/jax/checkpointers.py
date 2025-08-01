@@ -61,10 +61,30 @@ import functools
 import typing
 from typing import Any, Dict, Generic, Optional, Protocol, TypeVar, Union
 
-from dopamine.jax import serialization
+import jax.numpy as jnp
+import numpy as np
 from etils import epath
 import msgpack
 from orbax import checkpoint
+
+
+def _encode_for_msgpack(obj):
+  """Simple encoder for JAX/NumPy arrays in msgpack."""
+  if isinstance(obj, (jnp.ndarray, np.ndarray)):
+    return {
+        '__ndarray__': True,
+        'data': obj.tobytes(),
+        'dtype': str(obj.dtype),
+        'shape': obj.shape
+    }
+  raise TypeError(f"Object of type {type(obj)} is not serializable")
+
+
+def _decode_for_msgpack(obj):
+  """Simple decoder for JAX/NumPy arrays from msgpack."""
+  if isinstance(obj, dict) and obj.get('__ndarray__'):
+    return np.frombuffer(obj['data'], dtype=obj['dtype']).reshape(obj['shape'])
+  return obj
 
 
 @typing.runtime_checkable
@@ -96,7 +116,7 @@ class CheckpointHandler(checkpoint.CheckpointHandler, Generic[CheckpointableT]):
     # Get bytes using MsgPack
     packed = msgpack.packb(
         item.to_state_dict(),
-        default=serialization.encode,
+        default=_encode_for_msgpack,
         strict_types=False,
         use_bin_type=True,
     )
@@ -118,7 +138,7 @@ class CheckpointHandler(checkpoint.CheckpointHandler, Generic[CheckpointableT]):
     filename = directory / self._filename
     state_dict = msgpack.unpackb(
         filename.read_bytes(),
-        object_hook=serialization.decode,
+        object_hook=_decode_for_msgpack,
         raw=False,
         strict_map_key=False,
     )
