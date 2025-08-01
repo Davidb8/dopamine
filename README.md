@@ -1,38 +1,41 @@
-# Dopamine
-[Getting Started](#getting-started) |
-[Docs][docs] |
-[Baseline Results][baselines] |
-[Changelist](https://google.github.io/dopamine/docs/changelist)
+# Dopamine - Minimal EDQN Version
 
-<div align="center">
-  <img src="https://google.github.io/dopamine/images/dopamine_logo.png"><br><br>
-</div>
+This is an extremely minimal version of the Dopamine reinforcement learning framework, containing only the files necessary to support the Enhanced DQN (EDQN) agent with JAX.
 
-Dopamine is a research framework for fast prototyping of reinforcement learning
-algorithms. It aims to fill the need for a small, easily grokked codebase in
-which users can freely experiment with wild ideas (speculative research).
+## What's Included
 
-Our design principles are:
+This minimal version supports only these specific imports:
+```python
+from dopamine.jax.agents.edqn.edqn_agent import JaxEnhancedDQNAgent, train
+from dopamine.metrics import statistics_instance
+import dopamine.jax.agents.edqn.edqn_agent
+import dopamine.jax.agents.dqn.dqn_agent
+import dopamine.jax.replay_memory.replay_buffer
+```
 
-* _Easy experimentation_: Make it easy for new users to run benchmark
-                          experiments.
-* _Flexible development_: Make it easy for new users to try out research ideas.
-* _Compact and reliable_: Provide implementations for a few, battle-tested
-                          algorithms.
-* _Reproducible_: Facilitate reproducibility in results. In particular, our
-                  setup follows the recommendations given by
-                  [Machado et al. (2018)][machado].
+## Features
 
-Dopamine supports the following agents, implemented with jax:
+- **Enhanced DQN Agent**: JAX implementation with N-step updates and Prioritized Experience Replay
+- **JAX-based**: Modern, fast implementation using JAX/Flax
+- **Minimal Dependencies**: Only essential packages required (see requirements.txt)
+- **Core Functionality**: DQN base agent, replay memory system, loss functions, and networks
 
-* DQN ([Mnih et al., 2015][dqn])
-* C51 ([Bellemare et al., 2017][c51])
-* Rainbow ([Hessel et al., 2018][rainbow])
-* IQN ([Dabney et al., 2018][iqn])
-* SAC ([Haarnoja et al., 2018][sac])
-* PPO ([Schulman et al., 2017][ppo])
+## Installation
 
-For more information on the available agents, see the [docs](https://google.github.io/dopamine/docs).
+```bash
+pip install -r requirements.txt
+```
+
+## Testing
+
+Run the test script to verify all imports work:
+```bash
+python test_minimal_imports.py
+```
+
+## Original Dopamine
+
+This is a minimized version of the original [Google Dopamine](https://github.com/google/dopamine) framework. The original contains many more agents and features.
 
 Many of these agents also have a tensorflow (legacy) implementation, though
 newly added agents are likely to be jax-only.
