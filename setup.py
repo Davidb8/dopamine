@@ -38,6 +38,8 @@ install_requires = [
     'absl-py >= 0.9.0',
     'tensorflow >= 2.8.0',
     'python-snappy >= 0.7.3',
+    'etils[epath] >= 1.0.0',
+    'msgpack >= 1.0.0',
     'dataclasses; python_version<"3.7"',
 ]
 
