@@ -22,15 +22,33 @@ import dopamine.jax.replay_memory.replay_buffer
 
 ## Installation
 
+This minimal dopamine package requires Python 3.7+ and supports NumPy 2.2+:
+
 ```bash
 pip install -r requirements.txt
 ```
 
+### NumPy 2.2+ Support
+
+This version is updated to work with NumPy 2.2.4 and later versions. Key updates include:
+
+- **JAX/JAXLib 0.4.33+**: Full NumPy 2.2 support  
+- **TensorFlow 2.18+**: NumPy 2.0+ compatibility
+- **Orbax 0.6.0+**: Updated for newer JAX versions
+
 ## Testing
 
-Run the test script to verify all imports work:
-```bash
-python test_minimal_imports.py
+Test your installation and verify NumPy version:
+```python
+# Test that your specific imports work
+from dopamine.jax.agents.edqn.edqn_agent import JaxEnhancedDQNAgent, train
+from dopamine.metrics import statistics_instance
+import dopamine.jax.agents.edqn.edqn_agent
+import dopamine.jax.agents.dqn.dqn_agent
+import dopamine.jax.replay_memory.replay_buffer
+import numpy as np
+
+print(f"✅ All imports successful with NumPy {np.__version__}")
 ```
 
 ## Original Dopamine

@@ -28,15 +28,15 @@ here = pathlib.Path(__file__).parent.resolve()
 long_description = (here / 'README.md').read_text(encoding='utf-8')
 
 install_requires = [
-    'jax >= 0.3.16',
-    'jaxlib >= 0.3.15', 
+    'jax >= 0.4.33',
+    'jaxlib >= 0.4.33', 
     'flax >= 0.5.3',
     'optax >= 0.1.5',
     'gin-config >= 0.3.0',
-    'numpy >= 1.18.5',
-    'orbax-checkpoint >= 0.2.0',
+    'numpy >= 2.2.0',
+    'orbax-checkpoint >= 0.6.0',
     'absl-py >= 0.9.0',
-    'tensorflow >= 2.8.0',
+    'tensorflow >= 2.18.0',
     'python-snappy >= 0.7.3',
     'etils[epath] >= 1.0.0',
     'msgpack >= 1.0.0',
